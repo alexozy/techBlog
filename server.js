@@ -20,9 +20,10 @@ app.set('view engine', 'handlebars');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // TODO: adjust this line of code!
-app.use(require('./controllers/'));
+// TODO: set up controllers
+// app.use(require('./controllers/'));
 
 // Starts the server to begin listening
 app.listen(PORT, () => {
-    console.log('Server listening on' + PORT);
+    console.log(`Current Port: ${PORT}`);
 })
