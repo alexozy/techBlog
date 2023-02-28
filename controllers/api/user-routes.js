@@ -4,11 +4,14 @@ const { User } = require('../../models');
 // GET /api/users
 router.get('/', (req, res) => {
     // CRUD -- API endpoint that selects all users once it receives a GET request
-    User.findAll()
-        .then(dbUserData => res.json(dbUserData)) 
+    User.findAll({
+        // stop client from receving user passwords
+        attributes: { exclude: ['password'] }
+    })
+        .then(dbUserData => res.json(dbUserData))
         .catch(err => {
             console.log(err);
-            res.status(500).json(err); 
+            res.status(500).json(err);
         });
 });
 
@@ -16,19 +19,21 @@ router.get('/', (req, res) => {
 // GET /api/users/1 
 router.get('/:id', (req, res) => {
     // CRUD -- API endpoint when searching for a SPECIFIC user
-    User.findOne({ where: {
-        id: req.params.id 
-            }
-        })
-
-        .then(dbUserData => {
-        if (!dbUserData) {
-        res.status(404).json({ message: 'No user found with this id' }); 
-        return;
+    User.findOne({
+        attributes: { exclude: ['password'] },
+        where: {
+            id: req.params.id
         }
-        res.json(dbUserData); })
-        .catch(err => { 
-            console.log(err); 
+    })
+        .then(dbUserData => {
+            if (!dbUserData) {
+                res.status(404).json({ message: 'id not assigned' });
+                return;
+            }
+            res.json(dbUserData);
+        })
+        .catch(err => {
+            console.log(err);
             res.status(500).json(err);
         });
 
@@ -61,7 +66,7 @@ router.put('/:id', (req, res) => {
         })
         .then(dbUserData => {
         if (!dbUserData[0]) {
-        res.status(404).json({ message: 'No user found with this id' }); 
+        res.status(404).json({ message: 'id not assigned' }); 
         return;
         }
         res.json(dbUserData); 
