@@ -1,6 +1,6 @@
 // Dependencies
 const express =require('express');
-const controllers = require('./controllers');
+const routes = require('./controllers/');
 const sequelize = require('./config/connection');
 
 // Import express-handlebars
@@ -34,5 +34,5 @@ app.use(require('./controllers'));
 // the force:false is useful here because it would drop and re-create databases on startup!
 
 sequelize.sync({ force: false }).then(() => {
-    app.listen(PORT, () => console.log(`Now listening  ${PORT}`)); 
+    app.listen(PORT, () => console.log(`Now listening to ${PORT}`)); 
 });
